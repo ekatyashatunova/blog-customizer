@@ -7,28 +7,72 @@ import { Text } from 'src/ui/text';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
+import {
+	fontFamilyOptions,
+	fontColors,
+	backgroundColors,
+	contentWidthArr,
+	fontSizeOptions /*defaultArticleState */,
+} from 'src/constants/articleProps';
+import { useState } from 'react';
 
 export const ArticleParamsForm = () => {
-	const;
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+	/*const [defaultState,setDefaultArticleState] = useState(defaultArticleState);*/
+	const [fontFamily, setFontFamily] = useState(fontFamilyOptions[0]);
+	const [fontColor, setFontColor] = useState(fontColors[0]);
+	const [backgroundColor, setBackgroundColor] = useState(backgroundColors[0]);
+	const [content, setContent] = useState(contentWidthArr[0]);
+	const [fontSize, setFontSize] = useState(fontSizeOptions[0]);
+
+	const toggleSidebarOpen = () => {
+		setSidebarOpen((state: typeof sidebarOpen) => !state);
+	};
+
+	const formMenu = clsx({
+		[styles.container]: true,
+		[styles.container_open]: sidebarOpen,
+	});
 
 	return (
 		<>
-			<ArrowButton isOpen={true} onClick={() => {}} />
-			<aside className={clsx(styles.container, styles.container_open)}>
+			<ArrowButton isOpen={sidebarOpen} onClick={toggleSidebarOpen} />
+			<aside className={formMenu}>
 				<form className={clsx(styles.form)}>
-					<Text uppercase={true} size={31} weight={800}>
+					<Text as={'h2'} uppercase={true} size={31} weight={800}>
 						Задайте параметры
 					</Text>
-					<Select selected={} options={} title={'Шрифт'} onChange={} />
-					<RadioGroup name={} options={} selected={} title={'Размер шрифта'} />
-					<Select selected={} options={} title={'Цвет шрифта'} onChange={} />
-					<Separator />
-					<Select selected={} options={} title={'Цвет фона'} onChange={} />
 					<Select
-						selected={}
-						options={}
+						selected={fontFamily}
+						options={fontFamilyOptions}
+						title={'Шрифт'}
+						onChange={setFontFamily}
+					/>
+					<RadioGroup
+						name={'radio'}
+						options={fontSizeOptions}
+						selected={fontSize}
+						title={'Размер шрифта'}
+						onChange={setFontSize}
+					/>
+					<Select
+						selected={fontColor}
+						options={fontColors}
+						title={'Цвет шрифта'}
+						onChange={setFontColor}
+					/>
+					<Separator />
+					<Select
+						selected={backgroundColor}
+						options={backgroundColors}
+						title={'Цвет фона'}
+						onChange={setBackgroundColor}
+					/>
+					<Select
+						selected={content}
+						options={contentWidthArr}
 						title={'Ширина контента'}
-						onChange={}
+						onChange={setContent}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
