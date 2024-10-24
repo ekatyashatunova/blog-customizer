@@ -14,7 +14,8 @@ import {
 	contentWidthArr,
 	fontSizeOptions /*defaultArticleState */,
 } from 'src/constants/articleProps';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 
 export const ArticleParamsForm = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -34,9 +35,20 @@ export const ArticleParamsForm = () => {
 		[styles.container_open]: sidebarOpen,
 	});
 
+	const overlayRef = useRef(null);
+
+	useOutsideClickClose({
+		isOpen: sidebarOpen,
+		rootRef: overlayRef,
+		onClose: () => setSidebarOpen(false),
+		onChange: setSidebarOpen,
+	});
+
 	return (
 		<>
+			<div ref={overlayRef} />
 			<ArrowButton isOpen={sidebarOpen} onClick={toggleSidebarOpen} />
+
 			<aside className={formMenu}>
 				<form className={clsx(styles.form)}>
 					<Text as={'h2'} uppercase={true} size={31} weight={800}>
