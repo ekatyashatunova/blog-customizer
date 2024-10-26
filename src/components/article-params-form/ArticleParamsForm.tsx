@@ -66,6 +66,12 @@ export const ArticleParamsForm = ({
 		setFontSize(fontSizeOptions[0]);
 	};
 
+	/*const enterSubmitRef = useRef(null);
+	useEnterSubmit({
+		placeholderRef: enterSubmitRef,
+		onChange:
+	})*/
+
 	return (
 		<>
 			<ArrowButton isOpen={sidebarOpen} onClick={toggleSidebarOpen} />
