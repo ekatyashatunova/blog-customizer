@@ -17,7 +17,6 @@ import {
 } from 'src/constants/articleProps';
 import { useState, useRef } from 'react';
 import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
-/*import { useEnterSubmit } from 'src/ui/select/hooks/useEnterSubmit';*/
 
 type Props = (newState: ArticleStateType) => void;
 interface ArticleParamsFormProps {
@@ -66,23 +65,16 @@ export const ArticleParamsForm = ({
 		setFontSize(fontSizeOptions[0]);
 	};
 
-	/*const enterSubmitRef = useRef(null);
-	useEnterSubmit({
-		placeholderRef: enterSubmitRef,
-		onChange:
-	})*/
-
 	return (
 		<>
 			<ArrowButton isOpen={sidebarOpen} onClick={toggleSidebarOpen} />
 			<aside
-				className={clsx({
-					[styles.container]: true,
+				className={clsx(styles.container, {
 					[styles.container_open]: sidebarOpen,
 				})}
 				ref={overlayRef}>
 				<form
-					className={clsx(styles.form)}
+					className={styles.form}
 					onSubmit={handleButtonSubmit}
 					onReset={handleReset}>
 					<Text as={'h2'} uppercase={true} size={31} weight={800}>

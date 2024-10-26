@@ -35,6 +35,8 @@ const App = () => {
 
 root.render(
 	<StrictMode>
-		<App />
+		<main>
+			<App />
+		</main>
 	</StrictMode>
 );
