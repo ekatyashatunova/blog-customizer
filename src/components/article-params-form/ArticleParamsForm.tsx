@@ -14,6 +14,8 @@ import {
 	contentWidthArr,
 	fontSizeOptions,
 	ArticleStateType,
+	defaultArticleState,
+	OptionType,
 } from 'src/constants/articleProps';
 import { useState, useRef } from 'react';
 import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
@@ -26,51 +28,44 @@ interface ArticleParamsFormProps {
 export const ArticleParamsForm = ({
 	changeArticleStyle,
 }: ArticleParamsFormProps) => {
-	const [sidebarOpen, setSidebarOpen] = useState(false);
-	const [fontFamilyOption, setFontFamily] = useState(fontFamilyOptions[0]);
-	const [fontColor, setFontColor] = useState(fontColors[0]);
-	const [backgroundColor, setBackgroundColor] = useState(backgroundColors[0]);
-	const [contentWidth, setContent] = useState(contentWidthArr[0]);
-	const [fontSizeOption, setFontSize] = useState(fontSizeOptions[0]);
+	const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+	const [state, setState] = useState(defaultArticleState);
+
+	const handleOnChange = (field: keyof ArticleStateType) => {
+		return (value: OptionType) => {
+			setState((prevState) => ({ ...prevState, [field]: value }));
+		};
+	};
 
 	const toggleSidebarOpen = () => {
-		setSidebarOpen((state: typeof sidebarOpen) => !state);
+		setSidebarIsOpen((state: typeof sidebarIsOpen) => !state);
 	};
 
 	const overlayRef = useRef(null);
 
 	useOutsideClickClose({
-		isOpen: sidebarOpen,
+		isOpen: sidebarIsOpen,
 		rootRef: overlayRef,
-		onClose: () => setSidebarOpen(false),
-		onChange: setSidebarOpen,
+		onClose: () => setSidebarIsOpen(false),
+		onChange: setSidebarIsOpen,
 	});
 
 	const handleButtonSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
-		changeArticleStyle({
-			fontFamilyOption,
-			fontColor,
-			backgroundColor,
-			contentWidth,
-			fontSizeOption,
-		});
+		changeArticleStyle(state);
 	};
 
 	const handleReset = () => {
-		setFontFamily(fontFamilyOptions[0]);
-		setFontColor(fontColors[0]);
-		setBackgroundColor(backgroundColors[0]);
-		setContent(contentWidthArr[0]);
-		setFontSize(fontSizeOptions[0]);
+		setState(defaultArticleState);
+		changeArticleStyle(defaultArticleState);
 	};
 
 	return (
 		<>
-			<ArrowButton isOpen={sidebarOpen} onClick={toggleSidebarOpen} />
+			<ArrowButton isOpen={sidebarIsOpen} onClick={toggleSidebarOpen} />
 			<aside
 				className={clsx(styles.container, {
-					[styles.container_open]: sidebarOpen,
+					[styles.container_open]: sidebarIsOpen,
 				})}
 				ref={overlayRef}>
 				<form
@@ -81,36 +76,36 @@ export const ArticleParamsForm = ({
 						Задайте параметры
 					</Text>
 					<Select
-						selected={fontFamilyOption}
+						selected={state.fontFamilyOption}
 						options={fontFamilyOptions}
 						title={'Шрифт'}
-						onChange={setFontFamily}
+						onChange={handleOnChange('fontFamilyOption')}
 					/>
 					<RadioGroup
 						name={'radio'}
 						options={fontSizeOptions}
-						selected={fontSizeOption}
+						selected={state.fontSizeOption}
 						title={'Размер шрифта'}
-						onChange={setFontSize}
+						onChange={handleOnChange('fontSizeOption')}
 					/>
 					<Select
-						selected={fontColor}
+						selected={state.fontColor}
 						options={fontColors}
 						title={'Цвет шрифта'}
-						onChange={setFontColor}
+						onChange={handleOnChange('fontColor')}
 					/>
 					<Separator />
 					<Select
-						selected={backgroundColor}
+						selected={state.backgroundColor}
 						options={backgroundColors}
 						title={'Цвет фона'}
-						onChange={setBackgroundColor}
+						onChange={handleOnChange('backgroundColor')}
 					/>
 					<Select
-						selected={contentWidth}
+						selected={state.contentWidth}
 						options={contentWidthArr}
 						title={'Ширина контента'}
-						onChange={setContent}
+						onChange={handleOnChange('contentWidth')}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
