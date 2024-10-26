@@ -34,6 +34,11 @@
 	color: rgb(0 0 0);
 }
 
+.placeholder:focus-visible {
+	border: 1px solid #000000;
+	border-radius: 3px;
+}
+
 .selectWrapper[data-is-active='true'] .arrow {
 	margin-top: -14px;
 	transform: rotate(180deg);
